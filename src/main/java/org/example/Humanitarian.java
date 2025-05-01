@@ -19,11 +19,12 @@ public class Humanitarian extends Mission {
     }
 
     /**
-     *
-     * @return
+     * prints details of missions
+     * including ID, objective, priority level, budget, staff assigned
+     * and aid items
      */
     @Override
-    public String generateReport() {
+    public void displayDetails() {
         // TODO
     }
 
@@ -43,6 +44,8 @@ public class Humanitarian extends Mission {
 
     @Override
     public String toString() {
+        // TODO: for-loop the aid items
+
         return "Humanitarian{" +
                 "aidItems=" + aidItems + ", " +
                 super.toString() +

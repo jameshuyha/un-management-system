@@ -15,6 +15,15 @@ public class Intern extends Staff {
         this.university = university;
     }
 
+    /**
+     * Display staff details, including name, nationality, security level
+     * and university
+     */
+    @Override
+    public void displayDetails() {
+        // TODO
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

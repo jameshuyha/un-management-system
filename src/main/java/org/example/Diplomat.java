@@ -15,6 +15,15 @@ public class Diplomat extends Staff {
         this.country = country;
     }
 
+    /**
+     * Display staff details, including name, nationality, security level
+     * and country of representation
+     */
+    @Override
+    public void displayDetails() {
+        // TODO
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

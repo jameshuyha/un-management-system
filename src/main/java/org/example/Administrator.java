@@ -15,6 +15,15 @@ public class Administrator extends Staff {
         this.department = department;
     }
 
+    /**
+     * Display staff details, including name, nationality, security level
+     * and department
+     */
+    @Override
+    public void displayDetails() {
+        // TODO
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -19,20 +19,7 @@ public abstract class Staff implements Comparable<Staff> {
         this.securityLevel = securityLevel;
     }
 
-    /**
-     * assigns staff member to a mission
-     * @param mission mission to assign staff to
-     */
-    public void assignTo(Mission mission) {
-        // TODO
-    }
-
-    /**
-     * Display staff details, including name, nationality, and security level
-     */
-    public void displayDetails() {
-        // TODO
-    }
+    public abstract void displayDetails();
 
     @Override
     public int compareTo(Staff staff) {

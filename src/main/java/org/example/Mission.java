@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,8 +11,6 @@ public abstract class Mission implements Reportable {
     protected PriorityLevel priorityLevel;
     protected double budget;
     protected List<Staff> assignedStaff;
-
-    // DON'T FORGET COMPARATOR
 
     public Mission() {
         this.id = "1";
@@ -30,36 +29,62 @@ public abstract class Mission implements Reportable {
     }
 
     /**
-     *
-     * @param staff
+     * assigns staff members to a mission
+     * @param staff staff member to add
+     * @return whether the staff member could be added
+     * based on their current presence in the mission
      */
-    public void addStaff(Staff staff) {
-        // TODO
+    public boolean addStaff(Staff staff) {
+        if (!assignedStaff.contains(staff)) {
+            assignedStaff.add(staff);
+            System.out.println(staff.name + " has been added to the mission.");
+
+            return true;
+        }
+
+        System.out.println(staff.name + " is already assigned to this mission.");
+        return false;
     }
 
     /**
-     *
-     * @param staff
-     * @return
+     * removes staff member from a mission
+     * @param staff staff member to remove
+     * @return whether the staff member could be removed
+     * based on their current presence in the mission
      */
     public boolean removeStaff(Staff staff) {
-        // TODO
+        if (assignedStaff.contains(staff)) {
+            assignedStaff.remove(staff);
+            System.out.println(staff.name + " has been removed from the mission.");
+
+            return true;
+        }
+
+        System.out.println(staff.name + " is not a current member of this mission and thus could not be removed.");
+        return false;
     }
 
     /**
-     *
-     * @return
+     * reads a CSV mission report
+     * @return mission report details
+     * including ID, objective, priority level, budget, and staff assigned
+     * including troop count or aid items depending on instance
      */
-    public String generateReport() {
+    public String readReport() {
         // TODO
+        return "temporary"; // so I can run my test cases without getting an error
     }
 
     /**
-     * prints details of missions, including ID, objective, priority level, budget, and staff assigned
+     * writes a CSV mission report, including details such as
+     * ID, objective, priority level, budget, staff assigned
+     * including troop count or aid items depending on instance
      */
-    public void displayDetails() {
+    public void generateReport() {
         // TODO
     }
+
+    public abstract void displayDetails();
 
     @Override
     public boolean equals(Object o) {
@@ -76,6 +101,8 @@ public abstract class Mission implements Reportable {
 
     @Override
     public String toString() {
+        // TODO: for-loop through the assigned staff
+
         return "Mission{" +
                 "id='" + id + '\'' +
                 ", objective='" + objective + '\'' +
@@ -123,6 +150,24 @@ public abstract class Mission implements Reportable {
 
     public void setAssignedStaff(List<Staff> assignedStaff) {
         this.assignedStaff = assignedStaff;
+    }
+
+    public static class MissionComparator implements Comparator<Mission> {
+        private final String identifier;
+
+        public MissionComparator(String identifier) {
+            this.identifier = identifier;
+        }
+
+        @Override
+        public int compare(Mission m1, Mission m2) {
+             return switch (identifier) {
+                case "id" -> m1.id.compareTo(m2.id);
+                case "budget" -> Double.compare(m1.budget, m2.budget);
+                case "priority" -> m1.priorityLevel.compareTo(m2.priorityLevel);
+                default -> m1.objective.compareTo(m2.objective);
+            };
+        }
     }
 
     public enum PriorityLevel {

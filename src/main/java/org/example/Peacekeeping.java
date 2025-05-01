@@ -17,11 +17,12 @@ public class Peacekeeping extends Mission {
     }
 
     /**
-     *
-     * @return
+     * prints details of missions
+     * including ID, objective, priority level, budget, staff assigned
+     * and troop count
      */
     @Override
-    public String generateReport() {
+    public void displayDetails() {
         // TODO
     }
 
