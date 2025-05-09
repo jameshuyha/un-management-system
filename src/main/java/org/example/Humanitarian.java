@@ -44,8 +44,6 @@ public class Humanitarian extends Mission {
 
     @Override
     public String toString() {
-        // TODO: for-loop the aid items
-
         return "Humanitarian{" +
                 "aidItems=" + aidItems + ", " +
                 super.toString() +

@@ -1,15 +1,16 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 public abstract class Mission implements Reportable {
     protected String id;
     protected String objective;
     protected PriorityLevel priorityLevel;
     protected double budget;
+    protected boolean launchStatus;
     protected List<Staff> assignedStaff;
 
     public Mission() {
@@ -17,14 +18,16 @@ public abstract class Mission implements Reportable {
         this.objective = "NaN";
         this.priorityLevel = PriorityLevel.FIVE;
         this.budget = 0.0;
+        this.launchStatus = false;
         this.assignedStaff = new ArrayList<>();
     }
 
-    public Mission(String id, String objective, PriorityLevel priorityLevel, double budget, List<Staff> assignedStaff) {
+    public Mission(String id, String objective, PriorityLevel priorityLevel, double budget, boolean launchStatus, List<Staff> assignedStaff) {
         this.id = id;
         this.objective = objective;
         this.priorityLevel = priorityLevel;
         this.budget = budget;
+        this.launchStatus = launchStatus;
         this.assignedStaff = assignedStaff;
     }
 
@@ -32,9 +35,14 @@ public abstract class Mission implements Reportable {
      * assigns staff members to a mission
      * @param staff staff member to add
      * @return whether the staff member could be added
-     * based on their current presence in the mission
+     * based on their current presence in the mission or mission launch status
      */
     public boolean addStaff(Staff staff) {
+        if (launchStatus) {
+            System.out.println("Mission has already been launched. Staff can no longer be added");
+            return false;
+        }
+
         if (!assignedStaff.contains(staff)) {
             assignedStaff.add(staff);
             System.out.println(staff.name + " has been added to the mission.");
@@ -50,9 +58,14 @@ public abstract class Mission implements Reportable {
      * removes staff member from a mission
      * @param staff staff member to remove
      * @return whether the staff member could be removed
-     * based on their current presence in the mission
+     * based on their current presence in the mission or mission launch status
      */
     public boolean removeStaff(Staff staff) {
+        if (launchStatus) {
+            System.out.println("Mission has already been launched. Staff can no longer be removed.");
+            return false;
+        }
+
         if (assignedStaff.contains(staff)) {
             assignedStaff.remove(staff);
             System.out.println(staff.name + " has been removed from the mission.");
@@ -67,7 +80,7 @@ public abstract class Mission implements Reportable {
     /**
      * reads a CSV mission report
      * @return mission report details
-     * including ID, objective, priority level, budget, and staff assigned
+     * including ID, objective, priority level, budget, launch status, and staff assigned
      * including troop count or aid items depending on instance
      */
     public String readReport() {
@@ -77,37 +90,66 @@ public abstract class Mission implements Reportable {
 
     /**
      * writes a CSV mission report, including details such as
-     * ID, objective, priority level, budget, staff assigned
+     * ID, objective, priority level, budget, launch status, staff assigned
      * including troop count or aid items depending on instance
      */
-    public void generateReport() {
-        // TODO
+    public void generateReport(Mission mission) {
+        File file = new File("src/main/resources/missions/" + mission.getId() + ".csv");
+
+        try (FileWriter fw = new FileWriter(file, true)) {
+            fw.write(mission.getId() + ",");
+            fw.write(mission.getObjective() + ",");
+            fw.write(mission.getPriorityLevel() + ",");
+            fw.write(mission.getBudget() + ",");
+            fw.write(mission.getLaunchStatus() + "\n");
+
+            if (!mission.getAssignedStaff().isEmpty()) {
+                for (int i = 0; i < mission.getAssignedStaff().size(); i++) {
+                    fw.write(mission.getAssignedStaff().get(i).getName());
+                    if (i < mission.getAssignedStaff().size() - 1) {
+                        fw.write(",");
+                    }
+                }
+            }
+
+            fw.write("\n");
+
+            if (mission instanceof Humanitarian) {
+                for (Map.Entry<String, Integer> aidItem : ((Humanitarian) mission).getAidItems().entrySet()) {
+                    fw.write(aidItem.getKey() + "," + aidItem.getValue() + "\n");
+                }
+            }
+
+            if (mission instanceof Peacekeeping) {
+                fw.write(Integer.toString(((Peacekeeping) mission).getTroopCount()));
+            }
+        } catch (IOException e) {
+            System.out.println(String.format("%s: %s", e.getClass(), e.getMessage()));
+        }
     }
 
     public abstract void displayDetails();
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Mission mission = (Mission) o;
-        return Double.compare(budget, mission.budget) == 0 && Objects.equals(id, mission.id) && Objects.equals(objective, mission.objective) && priorityLevel == mission.priorityLevel && Objects.equals(assignedStaff, mission.assignedStaff);
+        return Double.compare(budget, mission.budget) == 0 && launchStatus == mission.launchStatus && Objects.equals(id, mission.id) && Objects.equals(objective, mission.objective) && priorityLevel == mission.priorityLevel && Objects.equals(assignedStaff, mission.assignedStaff);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, objective, priorityLevel, budget, assignedStaff);
+        return Objects.hash(id, objective, priorityLevel, budget, launchStatus, assignedStaff);
     }
 
     @Override
     public String toString() {
-        // TODO: for-loop through the assigned staff
-
         return "Mission{" +
                 "id='" + id + '\'' +
                 ", objective='" + objective + '\'' +
                 ", priorityLevel=" + priorityLevel +
                 ", budget=" + budget +
+                ", launchStatus=" + launchStatus +
                 ", assignedStaff=" + assignedStaff +
                 '}';
     }
@@ -142,6 +184,14 @@ public abstract class Mission implements Reportable {
 
     public void setBudget(double budget) {
         this.budget = budget;
+    }
+
+    public boolean getLaunchStatus() {
+        return launchStatus;
+    }
+
+    public void setLaunchStatus(boolean launchStatus) {
+        this.launchStatus = launchStatus;
     }
 
     public List<Staff> getAssignedStaff() {
