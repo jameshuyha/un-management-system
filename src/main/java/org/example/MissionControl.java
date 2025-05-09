@@ -3,27 +3,48 @@ package org.example;
 import java.util.List;
 
 public class MissionControl {
-    private List<Mission> missions;
-
-    public MissionControl(List<Mission> missions) {
-        this.missions = missions;
-    }
+    protected static List<Mission> missions;
 
     /**
-     * creates mission with following information
-     * @param id given ID
-     * @param objective given objective
-     * @param priorityLevel given priority level
-     * @param budget given budget
+     * creates mission
+     * @param mission given mission
      * @return whether or not the mission could be added
      */
-    public boolean addMission (String id, String objective, int priorityLevel, double budget) {
-        if (findMissionById(id) != null) {
-            System.out.println("Mission with identical ID already exists.");
+    public boolean addMission (Mission mission) {
+        if (mission == null) {
+            System.out.println("Cannot add a null mission.");
             return false;
         }
 
-        // TODO
+        for (Mission existingMission : missions) {
+            if (existingMission.getId().equals(mission.getId())) {
+                System.out.println("A mission with this ID already exists.");
+                return false;
+            }
+        }
+
+        missions.add(mission);
+        System.out.println("Mission with ID " + mission.getId() + " has been added.");
+        return true;
+    }
+
+    /**
+     * deletes mission
+     * @param mission given mission
+     * @return whether or not the mission could be terminated
+     */
+    public boolean terminateMission (Mission mission) {
+        for (Mission existingMission : missions) {
+            if (existingMission.getId().equals(mission.getId())) {
+                missions.remove(mission);
+                System.out.println("Mission has been terminated.");
+
+                return true;
+            }
+        }
+
+        System.out.println("The mission to terminate does not exist.");
+        return false;
     }
 
     /**

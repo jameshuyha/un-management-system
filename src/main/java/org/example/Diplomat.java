@@ -21,7 +21,10 @@ public class Diplomat extends Staff {
      */
     @Override
     public void displayDetails() {
-        // TODO
+        System.out.println("Name: " + getName());
+        System.out.println("Nationality: " + getNationality());
+        System.out.println("Security Level: " + getSecurityLevel());
+        System.out.println("Country of Representation: " + country);
     }
 
     @Override

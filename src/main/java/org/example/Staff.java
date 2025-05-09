@@ -2,7 +2,7 @@ package org.example;
 
 import java.util.Objects;
 
-public abstract class Staff implements Comparable<Staff> {
+public abstract class Staff implements Comparable<Staff>, Reportable {
     protected String name;
     protected String nationality;
     protected SecurityLevel securityLevel;

@@ -13,19 +13,43 @@ public class Humanitarian extends Mission {
         this.aidItems = new HashMap<>();
     }
 
-    public Humanitarian(String id, String objective, PriorityLevel priorityLevel, double budget, List<Staff> assignedStaff, Map<String, Integer> aidItems) {
-        super(id, objective, priorityLevel, budget, assignedStaff);
+    public Humanitarian(String id, String objective, PriorityLevel priorityLevel, double budget, boolean launchStatus, List<Staff> assignedStaff, Map<String, Integer> aidItems) {
+        super(id, objective, priorityLevel, budget, launchStatus, assignedStaff);
         this.aidItems = aidItems;
     }
 
     /**
-     * prints details of missions
-     * including ID, objective, priority level, budget, staff assigned
+     * prints details of all humanitarian missions
+     * including ID, objective, priority level, budget, launch status, staff assigned
      * and aid items
      */
     @Override
     public void displayDetails() {
-        // TODO
+        System.out.println("Mission ID: " + getId());
+        System.out.println("Objective: " + getObjective());
+        System.out.println("Priority Level: " + getPriorityLevel());
+        System.out.println("Budget: $" + getBudget());
+        System.out.println("Launch Status: " + (getLaunchStatus() ? "Launched" : "Unlaunched"));
+
+        System.out.println("Assigned Staff: ");
+        if (getAssignedStaff().isEmpty()) {
+            System.out.println("No staff assigned.");
+        } else {
+            for (Staff staff : getAssignedStaff()) {
+                System.out.println("- " + staff.getName());
+            }
+        }
+
+        System.out.println("Aid Items: ");
+        if (aidItems.isEmpty()) {
+            System.out.println("No aid items.");
+        } else {
+            for (Map.Entry<String, Integer> entry : aidItems.entrySet()) {
+                System.out.println("- " + entry.getKey() + ": " + entry.getValue());
+            }
+        }
+
+        System.out.println(); // line break between missions for readability
     }
 
     @Override

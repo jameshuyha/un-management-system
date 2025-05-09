@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Peacekeeping extends Mission {
@@ -11,20 +12,37 @@ public class Peacekeeping extends Mission {
         this.troopCount = 0;
     }
 
-    public Peacekeeping(String id, String objective, PriorityLevel priorityLevel, double budget, List<Staff> assignedStaff, int troopCount) {
-        super(id, objective, priorityLevel, budget, assignedStaff);
+    public Peacekeeping(String id, String objective, PriorityLevel priorityLevel, double budget, boolean launchStatus, List<Staff> assignedStaff, int troopCount) {
+        super(id, objective, priorityLevel, budget, launchStatus, assignedStaff);
         this.troopCount = troopCount;
     }
 
     /**
-     * prints details of missions
-     * including ID, objective, priority level, budget, staff assigned
+     * prints details of all peacekeeping missions
+     * including ID, objective, priority level, budget, launch status, staff assigned
      * and troop count
      */
     @Override
     public void displayDetails() {
-        // TODO
+        System.out.println("Mission ID: " + getId());
+        System.out.println("Objective: " + getObjective());
+        System.out.println("Priority Level: " + getPriorityLevel());
+        System.out.println("Budget: $" + getBudget());
+        System.out.println("Launch Status: " + (getLaunchStatus() ? "Launched" : "Unlaunched"));
+
+        System.out.println("Assigned Staff: ");
+        if (getAssignedStaff().isEmpty()) {
+            System.out.println("No staff assigned.");
+        } else {
+            for (Staff staff : getAssignedStaff()) {
+                System.out.println("- " + staff.getName());
+            }
+        }
+
+        System.out.println("Troop Count: " + getTroopCount());
+        System.out.println(); // line break between missions for readability
     }
+
 
     @Override
     public boolean equals(Object o) {
