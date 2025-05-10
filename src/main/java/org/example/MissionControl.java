@@ -3,14 +3,14 @@ package org.example;
 import java.util.List;
 
 public class MissionControl {
-    protected static List<Mission> missions;
+    public static List<Mission> missions;
 
     /**
      * creates mission
      * @param mission given mission
      * @return whether or not the mission could be added
      */
-    public boolean addMission (Mission mission) {
+    public static boolean addMission (Mission mission) {
         if (mission == null) {
             System.out.println("Cannot add a null mission.");
             return false;
@@ -33,10 +33,10 @@ public class MissionControl {
      * @param mission given mission
      * @return whether or not the mission could be terminated
      */
-    public boolean terminateMission (Mission mission) {
+    public static boolean terminateMission(Mission mission) {
         for (Mission existingMission : missions) {
-            if (existingMission.getId().equals(mission.getId())) {
-                missions.remove(mission);
+            if (existingMission.equals(mission)) {
+                missions.remove(existingMission);
                 System.out.println("Mission has been terminated.");
 
                 return true;
@@ -77,20 +77,18 @@ public class MissionControl {
      * @param missionId given mission id
      * @return mission associated to id
      */
-    private Mission findMissionById(String missionId) {
-        for (Mission mission : missions) {
-            if (mission.getId().equals(missionId)) {
-                return mission;
-            }
-        }
-        return null;
+    public Mission findMissionById(String missionId) {
+        return missions.stream()
+                .filter(mission -> mission.getId().equals(missionId))
+                .findFirst() // i had to teach myself this
+                .orElse(null);
     }
 
-    public List<Mission> getMissions() {
+    public static List<Mission> getMissions() {
         return missions;
     }
 
-    public void setMissions(List<Mission> missions) {
-        this.missions = missions;
+    public static void setMissions(List<Mission> missions) {
+        MissionControl.missions = missions;
     }
 }
