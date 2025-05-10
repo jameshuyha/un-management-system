@@ -83,9 +83,58 @@ public abstract class Mission implements Reportable {
      * including ID, objective, priority level, budget, launch status, and staff assigned
      * including troop count or aid items depending on instance
      */
-    public String readReport() {
-        // TODO
-        return "temporary"; // so I can run my test cases without getting an error
+    public String readReport(String path) {
+        File file = new File(path);
+
+        String id = "";
+        String objective = "";
+        String priorityLevel = "";
+        double budget = 0.0;
+        boolean launchStatus = false;
+        List<String> assignedStaff = new ArrayList<>();
+        Map<String, Integer> aidItems = new HashMap<>();
+        int troopCount = 0;
+
+        try (Scanner input = new Scanner(file)) {
+            if (input.hasNextLine()) {
+                String[] missionDetails = input.nextLine().split(",");
+                id = missionDetails[0];
+                objective = missionDetails[1];
+                priorityLevel = missionDetails[2];
+                budget = Double.parseDouble(missionDetails[3]);
+                launchStatus = Boolean.parseBoolean(missionDetails[4]);
+            }
+
+            if (input.hasNextLine()) {
+                String[] staffNames = input.nextLine().split(",");
+                for (String name : staffNames) {
+                    assignedStaff.add(name.trim());
+                }
+            }
+
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+                if (line.contains(",")) {
+                    String[] aidItem = line.split(",");
+                    String itemName = aidItem[0].trim();
+                    int quantity = Integer.parseInt(aidItem[1].trim());
+                    aidItems.put(itemName, quantity);
+                } else {
+                    troopCount = Integer.parseInt(line.trim());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(String.format("File %s does not exist", path));
+        }
+
+        return "aidItems=" + aidItems +
+                ", troopCount=" + troopCount +
+                ", id='" + id +
+                "', objective='" + objective +
+                "', priorityLevel=" + priorityLevel +
+                ", budget=" + budget +
+                ", launchStatus=" + launchStatus +
+                ", assignedStaff=" + assignedStaff;
     }
 
     /**
