@@ -1,16 +1,17 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MissionControl {
-    public static List<Mission> missions;
+    public static List<Mission> missions = new ArrayList<>();
 
     /**
      * creates mission
      * @param mission given mission
      * @return whether or not the mission could be added
      */
-    public static boolean addMission (Mission mission) {
+    public boolean addMission (Mission mission) {
         if (mission == null) {
             System.out.println("Cannot add a null mission.");
             return false;
@@ -33,7 +34,7 @@ public class MissionControl {
      * @param mission given mission
      * @return whether or not the mission could be terminated
      */
-    public static boolean terminateMission(Mission mission) {
+    public boolean terminateMission(Mission mission) {
         for (Mission existingMission : missions) {
             if (existingMission.equals(mission)) {
                 missions.remove(existingMission);

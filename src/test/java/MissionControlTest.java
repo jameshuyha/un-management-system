@@ -13,14 +13,14 @@ public class MissionControlTest {
         MissionControl.missions = new ArrayList<>();
         Mission mission = new Peacekeeping("1", "Protect Children in Tigray", Mission.PriorityLevel.THREE, 2000.0, false, new ArrayList<>(), 678);
 
-        Assertions.assertTrue(MissionControl.addMission(mission));
+        Assertions.assertTrue(new MissionControl().addMission(mission));
         Assertions.assertTrue(MissionControl.missions.contains(mission));
     }
 
     @Test
     public void testAddMission_nullMission() {
         MissionControl.missions = new ArrayList<>();
-        Assertions.assertFalse(MissionControl.addMission(null));
+        Assertions.assertFalse(new MissionControl().addMission(null));
     }
 
     @Test
@@ -30,8 +30,8 @@ public class MissionControlTest {
         Mission mission1 = new Peacekeeping("1", "Protect Children in Tigray", Mission.PriorityLevel.THREE, 2000.0, false, new ArrayList<>(), 678);
         Mission mission2 = new Humanitarian("1", "Transport Aid to Victims of the Myanmar Earthquake", Mission.PriorityLevel.FOUR, 25000.0, false, new ArrayList<>(), new HashMap<>());
 
-        Assertions.assertTrue(MissionControl.addMission(mission1));
-        Assertions.assertFalse(MissionControl.addMission(mission2));
+        Assertions.assertTrue(new MissionControl().addMission(mission1));
+        Assertions.assertFalse(new MissionControl().addMission(mission2));
         Assertions.assertTrue(MissionControl.missions.contains(mission1));
         Assertions.assertFalse(MissionControl.missions.contains(mission2));
     }
@@ -42,8 +42,8 @@ public class MissionControlTest {
         Mission mission1 = new Peacekeeping("1", "Protect Children in Tigray", Mission.PriorityLevel.THREE, 2000.0, false, new ArrayList<>(), 678);
         Mission mission2 = new Humanitarian("2", "Transport Aid to Victims of the Myanmar Earthquake", Mission.PriorityLevel.FOUR, 25000.0, false, new ArrayList<>(), new HashMap<>());
 
-        Assertions.assertTrue(MissionControl.addMission(mission1));
-        Assertions.assertTrue(MissionControl.addMission(mission2));
+        Assertions.assertTrue(new MissionControl().addMission(mission1));
+        Assertions.assertTrue(new MissionControl().addMission(mission2));
         Assertions.assertTrue(MissionControl.missions.contains(mission1));
         Assertions.assertTrue(MissionControl.missions.contains(mission2));
     }
@@ -55,7 +55,7 @@ public class MissionControlTest {
 
         MissionControl.missions.add(mission);
 
-        Assertions.assertTrue(MissionControl.terminateMission(mission));
+        Assertions.assertTrue(new MissionControl().terminateMission(mission));
         Assertions.assertFalse(MissionControl.missions.contains(mission));
     }
 
@@ -68,7 +68,7 @@ public class MissionControlTest {
 
         MissionControl.missions.add(mission1);
 
-        Assertions.assertFalse(MissionControl.terminateMission(mission2));
+        Assertions.assertFalse(new MissionControl().terminateMission(mission2));
         Assertions.assertTrue(MissionControl.missions.contains(mission1));
     }
 
@@ -77,7 +77,7 @@ public class MissionControlTest {
         MissionControl.missions = new ArrayList<>();
         Mission mission = new Peacekeeping("1", "Protect Children in Tigray", Mission.PriorityLevel.THREE, 2000.0, false, new ArrayList<>(), 678);
 
-        Assertions.assertFalse(MissionControl.terminateMission(mission));
+        Assertions.assertFalse(new MissionControl().terminateMission(mission));
         Assertions.assertFalse(MissionControl.missions.contains(mission));
     }
 
@@ -91,8 +91,8 @@ public class MissionControlTest {
         MissionControl.missions.add(mission1);
         MissionControl.missions.add(mission2);
 
-        Assertions.assertTrue(MissionControl.terminateMission(mission1));
-        Assertions.assertTrue(MissionControl.terminateMission(mission2));
+        Assertions.assertTrue(new MissionControl().terminateMission(mission1));
+        Assertions.assertTrue(new MissionControl().terminateMission(mission2));
         Assertions.assertFalse(MissionControl.missions.contains(mission1));
         Assertions.assertFalse(MissionControl.missions.contains(mission2));
     }
